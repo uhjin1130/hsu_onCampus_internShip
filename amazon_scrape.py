@@ -56,7 +56,7 @@ def get_product_info(driver, wait, asin):
         print(f"상품 정보 수집 중 오류 발생: {e}")
         return product_data
 
-def scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_per_product=50):
+def scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_per_product, is_first_product):
     """주어진 단일 상품에 대한 리뷰를 여러 페이지에 걸쳐 수집합니다."""
     asin = product_info['asin']
     product_name = product_info['product_name']
@@ -65,9 +65,18 @@ def scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_
     reviews_url = f"https://www.amazon.com/product-reviews/{asin}"
     driver.get(reviews_url)
 
+    # ★★★★★ 사용자 대기 로직을 이 함수 안으로 이동 ★★★★★
+    if is_first_product:
+        print("\n" + "="*60)
+        print("첫 번째 상품의 리뷰 페이지입니다.")
+        print("브라우저를 확인하고, 로그인 또는 CAPTCHA(퍼즐)를 해결해주세요.")
+        input("완료 후, 터미널로 돌아와 Enter 키를 누르세요: ")
+        print("사용자 확인 완료. 첫 리뷰 수집을 시작합니다...")
+
     reviews_data = []
     page_count = 1
     while len(reviews_data) < max_reviews_per_product:
+        # ... (이전과 동일한 리뷰 수집 및 페이지 이동 로직) ...
         print(f"\n{page_count} 페이지 리뷰 수집 중...")
         try:
             wait.until(EC.presence_of_element_located((By.ID, "cm_cr-review_list")))
@@ -135,6 +144,7 @@ def scrape_top_products(keyword, num_products_to_scrape=3, max_reviews_per_produ
     """아마존에서 Best Seller 상위 N개 상품의 정보와 리뷰를 수집합니다."""
     
     options = uc.ChromeOptions()
+    # (옵션 설정은 이전과 동일)
     options.add_argument('--start-maximized')
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument('--lang=en-US')
@@ -146,6 +156,7 @@ def scrape_top_products(keyword, num_products_to_scrape=3, max_reviews_per_produ
         wait = WebDriverWait(driver, 20)
         actions = ActionChains(driver)
 
+        # (검색 및 정렬 로직은 이전과 동일)
         driver.get("https://www.amazon.com/")
         print("Amazon.com에 접속합니다...")
         
@@ -191,7 +202,6 @@ def scrape_top_products(keyword, num_products_to_scrape=3, max_reviews_per_produ
         all_products_data = []
         all_reviews_data = []
         
-        # ★★★★★ 첫 번째 상품인지 확인하기 위한 플래그 변수 ★★★★★
         is_first_product = True
 
         for asin in asins_to_scrape:
@@ -199,19 +209,16 @@ def scrape_top_products(keyword, num_products_to_scrape=3, max_reviews_per_produ
             if product_info:
                 all_products_data.append(product_info)
             
-            # 리뷰 수집 함수 호출 전, 사용자 대기 로직 추가
-            if is_first_product:
-                print("\n" + "="*60)
-                print("첫 번째 상품의 리뷰 페이지로 이동합니다.")
-                print("브라우저를 확인하고, 로그인 또는 CAPTCHA(퍼즐)를 해결해주세요.")
-                input("완료 후, 터미널로 돌아와 Enter 키를 누르세요: ")
-                print("사용자 확인 완료. 첫 리뷰 수집을 시작합니다...")
-                is_first_product = False # 플래그를 False로 변경하여 다음부터는 실행되지 않도록 함
-
-            reviews = scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_per_product)
+            # ★★★★★ is_first_product 플래그를 scrape_reviews_for_product 함수로 전달 ★★★★★
+            reviews = scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_per_product, is_first_product)
             if reviews:
                 all_reviews_data.extend(reviews)
+            
+            # 첫 번째 상품 처리가 끝나면 플래그를 False로 변경
+            if is_first_product:
+                is_first_product = False
 
+        # (데이터 저장 로직은 이전과 동일)
         print("\n--- 모든 데이터 수집 완료. 파일 저장 시작 ---")
         if all_products_data:
             df_product = pd.DataFrame(all_products_data)
