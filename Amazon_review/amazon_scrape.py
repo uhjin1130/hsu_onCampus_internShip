@@ -3,6 +3,7 @@ import random
 import pandas as pd
 import re
 import datetime
+import os # ★★★★★ os 모듈 추가 ★★★★★
 
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
@@ -13,16 +14,17 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 def get_product_info(driver, wait, asin):
     """상품 상세 페이지에서 상품 정보를 추출합니다."""
+    # (이전과 동일한 내용)
     print(f"\n--- 상품 정보 수집 (ASIN: {asin}) ---")
     product_url = f"https://www.amazon.com/dp/{asin}"
     driver.get(product_url)
     
     product_data = {
+        'product_id': asin,
         'date': datetime.datetime.now().strftime('%Y-%m-%d'),
         'platform': 'Amazon',
         'product_name': 'N/A',
-        'asin': asin,
-        'price': 0,
+        'price': 0.0,
         'is_stockout': True
     }
     
@@ -56,27 +58,27 @@ def get_product_info(driver, wait, asin):
         print(f"상품 정보 수집 중 오류 발생: {e}")
         return product_data
 
-def scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_per_product, is_first_product):
+def scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_per_product, is_first_product, start_review_id):
     """주어진 단일 상품에 대한 리뷰를 여러 페이지에 걸쳐 수집합니다."""
-    asin = product_info['asin']
+    # (이전과 동일한 내용)
+    asin = product_info['product_id']
     product_name = product_info['product_name']
     
     print(f"--- '{product_name}' 리뷰 수집 시작 (최대 {max_reviews_per_product}개) ---")
     reviews_url = f"https://www.amazon.com/product-reviews/{asin}"
     driver.get(reviews_url)
 
-    # ★★★★★ 사용자 대기 로직을 이 함수 안으로 이동 ★★★★★
     if is_first_product:
         print("\n" + "="*60)
-        print("첫 번째 상품의 리뷰 페이지입니다.")
-        print("브라우저를 확인하고, 로그인 또는 CAPTCHA(퍼즐)를 해결해주세요.")
+        print("첫 상품 리뷰 페이지입니다. 로그인/CAPTCHA를 해결해주세요.")
         input("완료 후, 터미널로 돌아와 Enter 키를 누르세요: ")
         print("사용자 확인 완료. 첫 리뷰 수집을 시작합니다...")
 
     reviews_data = []
     page_count = 1
+    current_review_id = start_review_id
+
     while len(reviews_data) < max_reviews_per_product:
-        # ... (이전과 동일한 리뷰 수집 및 페이지 이동 로직) ...
         print(f"\n{page_count} 페이지 리뷰 수집 중...")
         try:
             wait.until(EC.presence_of_element_located((By.ID, "cm_cr-review_list")))
@@ -87,12 +89,12 @@ def scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_
 
         review_elements = driver.find_elements(By.CSS_SELECTOR, '[data-hook="review"]')
         if not review_elements:
-            print("현재 페이지에 리뷰가 없습니다.")
             break
             
         for review in review_elements:
             try:
                 body = review.find_element(By.CSS_SELECTOR, '[data-hook="review-body"] span').text.replace('\n', ' ').strip()
+                
                 if body and not any(d['review_text'] == body for d in reviews_data):
                     likes = 0
                     try:
@@ -102,16 +104,19 @@ def scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_
                             likes = int(match.group(1))
                     except NoSuchElementException:
                         pass
-
+                    
                     reviews_data.append({
+                        'review_id': current_review_id,
+                        'product_id': asin,
                         'date': datetime.datetime.now().strftime('%Y-%m-%d'),
                         'platform': 'Amazon',
                         'product_name': product_name,
-                        'asin': asin,
-                        'rating': review.find_element(By.CSS_SELECTOR, '[data-hook="review-star-rating"] span.a-icon-alt').get_attribute('innerHTML').split(' ')[0],
+                        'rating': float(review.find_element(By.CSS_SELECTOR, '[data-hook="review-star-rating"] span.a-icon-alt').get_attribute('innerHTML').split(' ')[0]),
                         'review_text': body,
                         'likes': likes
                     })
+                    current_review_id += 1
+
                 if len(reviews_data) >= max_reviews_per_product:
                     break
             except NoSuchElementException:
@@ -138,13 +143,12 @@ def scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_
             print("'Next Page' 버튼을 찾을 수 없습니다. 마지막 페이지입니다.")
             break
             
-    return reviews_data
+    return reviews_data, current_review_id
 
 def scrape_top_products(keyword, num_products_to_scrape=3, max_reviews_per_product=50):
     """아마존에서 Best Seller 상위 N개 상품의 정보와 리뷰를 수집합니다."""
     
     options = uc.ChromeOptions()
-    # (옵션 설정은 이전과 동일)
     options.add_argument('--start-maximized')
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument('--lang=en-US')
@@ -187,14 +191,9 @@ def scrape_top_products(keyword, num_products_to_scrape=3, max_reviews_per_produ
         print(f"\n상위 {num_products_to_scrape}개 상품의 ASIN을 수집합니다...")
         product_containers = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[data-component-type='s-search-result']")))
         
-        asins_to_scrape = []
-        for container in product_containers[:num_products_to_scrape]:
-            asin = container.get_attribute('data-asin')
-            if asin:
-                asins_to_scrape.append(asin)
+        asins_to_scrape = [container.get_attribute('data-asin') for container in product_containers[:num_products_to_scrape] if container.get_attribute('data-asin')]
         
         if not asins_to_scrape:
-            print("ASIN을 수집할 수 없습니다. 스크립트를 종료합니다.")
             return
 
         print(f"수집할 ASIN 목록: {asins_to_scrape}")
@@ -203,32 +202,49 @@ def scrape_top_products(keyword, num_products_to_scrape=3, max_reviews_per_produ
         all_reviews_data = []
         
         is_first_product = True
+        review_id_counter = 1
 
         for asin in asins_to_scrape:
             product_info = get_product_info(driver, wait, asin)
             if product_info:
                 all_products_data.append(product_info)
             
-            # ★★★★★ is_first_product 플래그를 scrape_reviews_for_product 함수로 전달 ★★★★★
-            reviews = scrape_reviews_for_product(driver, wait, actions, product_info, max_reviews_per_product, is_first_product)
+            reviews, review_id_counter = scrape_reviews_for_product(
+                driver, wait, actions, product_info, 
+                max_reviews_per_product, is_first_product, 
+                start_review_id=review_id_counter
+            )
             if reviews:
                 all_reviews_data.extend(reviews)
             
-            # 첫 번째 상품 처리가 끝나면 플래그를 False로 변경
             if is_first_product:
                 is_first_product = False
 
-        # (데이터 저장 로직은 이전과 동일)
         print("\n--- 모든 데이터 수집 완료. 파일 저장 시작 ---")
+
+        # ★★★★★ 저장 폴더 생성 및 경로 지정 (핵심 변경점) ★★★★★
+        output_folder = 'Amazon_review'
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+            print(f"'{output_folder}' 폴더를 생성했습니다.")
+
         if all_products_data:
             df_product = pd.DataFrame(all_products_data)
-            df_product.to_csv('amazon_top3_products.csv', index=False, encoding='utf-8-sig')
-            print("'amazon_top3_products.csv' 파일 저장 완료.")
+            df_product_to_save = df_product[['product_id', 'date', 'platform', 'product_name', 'price', 'is_stockout']]
+            
+            # 파일 경로를 폴더와 함께 지정
+            product_filepath = os.path.join(output_folder, 'amazon_products.csv')
+            df_product_to_save.to_csv(product_filepath, index=False, encoding='utf-8-sig')
+            print(f"'{product_filepath}' 파일 저장 완료.")
 
         if all_reviews_data:
             df_reviews = pd.DataFrame(all_reviews_data)
-            df_reviews.to_csv('amazon_top3_reviews.csv', index=False, encoding='utf-8-sig')
-            print("'amazon_top3_reviews.csv' 파일 저장 완료.")
+            df_reviews_to_save = df_reviews[['review_id', 'product_id', 'date', 'platform', 'product_name', 'rating', 'review_text', 'likes']]
+
+            # 파일 경로를 폴더와 함께 지정
+            reviews_filepath = os.path.join(output_folder, 'amazon_reviews.csv')
+            df_reviews_to_save.to_csv(reviews_filepath, index=False, encoding='utf-8-sig')
+            print(f"'{reviews_filepath}' 파일 저장 완료.")
 
     except Exception as e:
         print(f"스크립트 실행 중 오류가 발생했습니다: {e}")
