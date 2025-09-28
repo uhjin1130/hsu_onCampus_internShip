@@ -1,3 +1,11 @@
+# GITHUB REPO: FirstProjectForKHU/hsu_onCampus_internShip
+# FILE PATH: hsu_onCampus_internShip/Local_Trends/DietNewsTrendDataCrawling.py
+# DESCRIPTION: 다이어트 관련 뉴스 트렌드 데이터 수집 (구글뉴스 + 주요 언론사 RSS)
+# AUTHOR: 한승만
+# RECENT UPDATE: 2025-09-28
+# VERSION: 1.3
+
+
 import csv
 import time
 from datetime import datetime, timedelta
