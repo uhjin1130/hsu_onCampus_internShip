@@ -20,7 +20,6 @@ KEYWORD_LIST = [
 CSV_FILENAME = "DietNewsTrendDataCrawling.csv"
 # ------------------------------------
 
-# (parse_date, search_major_rss_feeds, search_google_news 함수는 변경 없음)
 def parse_date(date_str):
     now = datetime.now()
     if "분 전" in date_str:
@@ -98,7 +97,9 @@ def news_collection_process(keyword, last_sequence, existing_links):
         news_data = {
             "trend_id": current_sequence,
             "date": item['published'].strftime('%Y-%m-%d %H:%M'),
-            "platform": 'googlenews' if item['source_portal'] == '구글뉴스' else '언론사RSS',
+#           2025.9.9 언론사RSS 뉴스 data도 있는데 googlenews 로만 기록되는 부분을 수정
+#            "platform": 'googlenews' if item['source_portal'] == '구글뉴스' else '언론사RSS',
+            "platform": item['source_portal'],
             "keyword": keyword,
             # 2025-09-28 18:10: post_text에 제목과 링크를 줄바꿈(\n)으로 합쳐서 저장
             "post_text": f"{item['title']}\n{item['link']}",
