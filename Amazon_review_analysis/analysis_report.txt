@@ -1,0 +1,113 @@
+================================================================================
+다이어트 유산균 리뷰 분석 결과 리포트
+================================================================================
+
+[ 1. 전체 통계 ]
+--------------------------------------------------------------------------------
+총 리뷰 수: 1,943개
+평균 평점: 4.72 / 5.0
+긍정 리뷰 비율: 94.4%
+중립 리뷰 비율: 4.6%
+부정 리뷰 비율: 1.0%
+평균 감성 극성: 0.267 (-1 ~ 1)
+
+[ 2. 감성별 주요 키워드 ]
+--------------------------------------------------------------------------------
+
+■ POSITIVE 리뷰 키워드:
+    1. taste                          (TF-IDF: 0.0412)
+    2. stomach                        (TF-IDF: 0.0293)
+    3. health                         (TF-IDF: 0.0250)
+    4. price                          (TF-IDF: 0.0228)
+    5. gut                            (TF-IDF: 0.0221)
+    6. swallow                        (TF-IDF: 0.0213)
+    7. digestion                      (TF-IDF: 0.0190)
+    8. quality                        (TF-IDF: 0.0189)
+    9. effective                      (TF-IDF: 0.0173)
+   10. digestive                      (TF-IDF: 0.0165)
+   11. pain                           (TF-IDF: 0.0148)
+   12. bloating                       (TF-IDF: 0.0147)
+   13. lot                            (TF-IDF: 0.0138)
+   14. constipation                   (TF-IDF: 0.0133)
+   15. support                        (TF-IDF: 0.0132)
+
+■ NEUTRAL 리뷰 키워드:
+    1. taste                          (TF-IDF: 0.0903)
+    2. swallow                        (TF-IDF: 0.0299)
+    3. expensive                      (TF-IDF: 0.0267)
+    4. label                          (TF-IDF: 0.0258)
+    5. price                          (TF-IDF: 0.0251)
+    6. huge                           (TF-IDF: 0.0245)
+    7. couple                         (TF-IDF: 0.0234)
+    8. powder                         (TF-IDF: 0.0229)
+    9. gas                            (TF-IDF: 0.0223)
+   10. past                           (TF-IDF: 0.0210)
+   11. lot                            (TF-IDF: 0.0207)
+   12. found                          (TF-IDF: 0.0206)
+   13. zinc                           (TF-IDF: 0.0202)
+   14. water                          (TF-IDF: 0.0200)
+   15. stomach                        (TF-IDF: 0.0196)
+
+■ NEGATIVE 리뷰 키워드:
+    1. money                          (TF-IDF: 0.1797)
+    2. expensive                      (TF-IDF: 0.1579)
+    3. switch                         (TF-IDF: 0.1372)
+    4. fake                           (TF-IDF: 0.1372)
+
+[ 3. 고객 불만 영역 분석 (부정/중립 리뷰 기반) ]
+--------------------------------------------------------------------------------
+총 7개 불만 영역이 확인되었습니다.
+
+[1순위] 맛/냄새 문제
+  └ 언급 횟수: 25회
+  └ 영역 코드: taste_smell
+  └ 고객 의견 샘플:
+     1. (평점 3.0) i m not sure i notice much difference with anything however i am taking these to supplement my prena...
+     2. (평점 3.0) this powder mixes into food drink with no weird taste or texture but i m not sure if it serves its e...
+
+[2순위] 부작용/불편함
+  └ 언급 횟수: 22회
+  └ 영역 코드: side_effects
+  └ 고객 의견 샘플:
+     1. (평점 3.0) i am not real impressed with this one i find my stomach is swollen and more gas i will go back to my...
+     2. (평점 3.0) i have waited to review this product to try and be as accurate as possible on my experience with tak...
+
+[3순위] 크기/복용 불편
+  └ 언급 횟수: 19회
+  └ 영역 코드: size_difficulty
+  └ 고객 의견 샘플:
+     1. (평점 3.0) i didn t really notice any big difference then the digest enzymes i was taking prior and i tried it ...
+     2. (평점 3.0) thought i reordered my old one and it turned out to be 1 2 the size of my last purchase...
+
+[4순위] 효과/효능 부족
+  └ 언급 횟수: 16회
+  └ 영역 코드: effectiveness
+  └ 고객 의견 샘플:
+     1. (평점 3.0) i m not sure i notice much difference with anything however i am taking these to supplement my prena...
+     2. (평점 3.0) bring back the blister packs i used to swear by this product i would recommend it to everyone i know...
+
+[5순위] 가격/가치 불만족
+  └ 언급 횟수: 12회
+  └ 영역 코드: price_value
+  └ 고객 의견 샘플:
+     1. (평점 3.0) i am not real impressed with this one i find my stomach is swollen and more gas i will go back to my...
+     2. (평점 3.0) expensive product difficult to determine if effective...
+
+[6순위] 포장/품질 문제
+  └ 언급 횟수: 5회
+  └ 영역 코드: packaging_quality
+  └ 고객 의견 샘플:
+     1. (평점 3.0) not quite sure how many stars to give this this is a probiotic my doctor recommended and i ve been t...
+     2. (평점 3.0) bring back the blister packs i used to swear by this product i would recommend it to everyone i know...
+
+[7순위] 성분 우려
+  └ 언급 횟수: 5회
+  └ 영역 코드: ingredient_concerns
+  └ 고객 의견 샘플:
+     1. (평점 3.0) i have waited to review this product to try and be as accurate as possible on my experience with tak...
+     2. (평점 3.0) i was looking for an nsf certified product to be sure i m taking what i think i am but just noticed ...
+
+
+================================================================================
+분석 완료
+================================================================================
