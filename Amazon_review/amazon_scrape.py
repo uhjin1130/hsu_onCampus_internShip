@@ -354,5 +354,5 @@ def scrape_top_products(keyword, num_products_to_scrape=3, max_reviews_per_produ
 if __name__ == "__main__":
     search_keyword = "diet probiotics"
     scrape_top_products(
-        keyword=search_keyword, num_products_to_scrape=3, max_reviews_per_product=50
+        keyword=search_keyword, num_products_to_scrape=20, max_reviews_per_product=2000
     )
