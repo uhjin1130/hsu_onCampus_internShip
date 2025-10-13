@@ -582,8 +582,8 @@ def create_visualizations(df, keywords_by_sentiment, improvement_areas):
     output_folder = "Amazon_review_analysis"
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
-    plt.rcParams["font.family"] = "DejaVu Sans"
-    plt.rcParams["axes.unicode_minus"] = False
+    plt.rcParams['font.family'] = 'Malgun Gothic'  # Windows 맑은 고딕
+    plt.rcParams['axes.unicode_minus'] = False
     for sentiment in ["positive", "neutral", "negative"]:
         sentiment_df = df[df["sentiment_category"] == sentiment]
         if len(sentiment_df) == 0:
