@@ -85,7 +85,7 @@ def save_csv(rows, product_id_for_id=None):
     ])
 
     day_tag = datetime.now().strftime("%Y%m%d")
-    out = f"reviews_coupang_{day_tag}.csv"
+    out = f"original_coupang.csv"
     df.to_csv(out, index=False, encoding="utf-8-sig")
     return out, len(df)
 
@@ -197,7 +197,7 @@ async def fetch_page_api(reqctx, product_url: str, product_id: str, page: int, s
         "x-requested-with": "XMLHttpRequest",
     }
     if not COUPANG_COOKIE:
-        raise SystemExit("❌ COUPANG_COOKIE 환경변수가 비어 있습니다. 쿠키를 export 해주세요.")
+        raise SystemExit(" COUPANG_COOKIE 환경변수가 비어 있습니다. 쿠키를 export 해주세요.")
     headers["cookie"] = COUPANG_COOKIE
 
     timeout_ms = connect_timeout_ms + read_timeout_ms
