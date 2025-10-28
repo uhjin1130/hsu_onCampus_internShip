@@ -73,7 +73,7 @@
         /* 파일 입력 영역 컨테이너 - 반응형 Flex/Grid 적용 */
         .input-group-container {
             display: grid;
-            grid-template-columns: 1fr; /* 모바일 우선: 1열 */
+            grid-template-columns: 1fr; 
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -191,16 +191,12 @@
         
         /* 결과 섹션 */
         .result-content {
-            /* min-height를 350px로 늘려 로딩 화면과 결과가 충분히 보이도록 함 */
             min-height: 350px; 
             padding: 20px; 
             border: 3px solid #1a5cff; 
             border-radius: 8px;
             background-color: #f0f3ff; 
-            /* 내부 로딩 화면을 위한 위치 기준 설정 */
             position: relative; 
-            
-            /* 기본 텍스트 스타일 */
             font-size: 1.1em; 
             line-height: 1.7; 
             color: #000;
@@ -208,10 +204,10 @@
             overflow: auto; 
         }
         
-        /* Marked.js로 파싱된 결과를 위한 스타일 재정의 (가독성 개선 핵심) */
+        /* Marked.js로 파싱된 결과를 위한 스타일 재정의 */
         .result-content h1, .result-content h2, .result-content h3, .result-content h4 {
-             color: #1a5cff; /* 헤딩 색상 변경 */
-             border-bottom: 1px solid #c0c0c0; /* 헤딩 아래 줄 추가 */
+             color: #1a5cff; 
+             border-bottom: 1px solid #c0c0c0; 
              padding-bottom: 5px;
              margin-top: 25px;
              font-weight: bold;
@@ -227,28 +223,27 @@
             margin-bottom: 15px;
         }
         .result-content ul {
-            padding-left: 25px; /* 목록 들여쓰기 */
+            padding-left: 25px; 
             list-style-type: disc;
         }
         .result-content strong {
-            font-weight: 700; /* 볼드 텍스트를 확실히 강조 */
+            font-weight: 700; 
             color: #111;
         }
 
 
-        /* 로딩 애니메이션 (결과 박스 내부를 덮도록 수정) */
+        /* 로딩 애니메이션 */
         #loading {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex; /* 내부 요소 수직/수평 중앙 정렬을 위해 flex 사용 */
+            display: flex; 
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /* 배경색을 약간 투명한 흰색으로 만들어 아래 내용을 덮도록 함 */
-            background-color: rgba(255, 255, 255, 0.95); /* 95% 투명도 */
+            background-color: rgba(255, 255, 255, 0.95); 
             z-index: 20; 
             color: #1a5cff;
             text-align: center;
@@ -367,47 +362,47 @@
         
 <section id="upload-section" class="card">
             <p class="step-indicator"><span>Step 1.</span> 분석 자료 업로드</p>
-            <h2>자료 업로드 (CSV/PNG/JPG)</h2>
+            <h2>자료 업로드 </h2>
             <form id="uploadForm">
                 
                 <div class="input-group-container">
                     
                     <div class="input-group" data-category="domestic_trend">
-                        <h3>1. 국내 트렌드</h3>
+                        <h3>1. 국내 트렌드 </h3>
                         <div class="file-drop-area" data-input-id="domestic_trend_input">
                             <span class="icon-placeholder">➕</span>
                             <p>클릭 또는 드래그하여 파일 추가</p>
-                            <input type="file" id="domestic_trend_input" multiple accept=".csv, .png, .jpg, .jpeg" style="display: none;">
+                            <input type="file" id="domestic_trend_input" multiple accept=".csv, .xlsx, .xls, .png, .jpg, .jpeg" style="display: none;">
                         </div>
                         <div class="preview-area" id="domestic_trend_preview"></div>
                     </div>
 
                     <div class="input-group" data-category="international_trend">
-                        <h3>2. 해외 트렌드</h3>
+                        <h3>2. 해외 트렌드 </h3>
                         <div class="file-drop-area" data-input-id="international_trend_input">
                             <span class="icon-placeholder">➕</span>
                             <p>클릭 또는 드래그하여 파일 추가</p>
-                            <input type="file" id="international_trend_input" multiple accept=".csv, .png, .jpg, .jpeg" style="display: none;">
+                            <input type="file" id="international_trend_input" multiple accept=".csv, .xlsx, .xls, .png, .jpg, .jpeg" style="display: none;">
                         </div>
                         <div class="preview-area" id="international_trend_preview"></div>
                     </div>
 
                     <div class="input-group" data-category="domestic_review">
-                        <h3>3. 국내 리뷰</h3>
+                        <h3>3. 국내 리뷰 </h3>
                         <div class="file-drop-area" data-input-id="domestic_review_input">
                             <span class="icon-placeholder">➕</span>
                             <p>클릭 또는 드래그하여 파일 추가</p>
-                            <input type="file" id="domestic_review_input" multiple accept=".csv, .png, .jpg, .jpeg" style="display: none;">
+                            <input type="file" id="domestic_review_input" multiple accept=".csv, .xlsx, .xls, .png, .jpg, .jpeg" style="display: none;">
                         </div>
                         <div class="preview-area" id="domestic_review_preview"></div>
                     </div>
 
                     <div class="input-group" data-category="international_review">
-                        <h3>4. 해외 리뷰</h3>
+                        <h3>4. 해외 리뷰 </h3>
                         <div class="file-drop-area" data-input-id="international_review_input">
                             <span class="icon-placeholder">➕</span>
                             <p>클릭 또는 드래그하여 파일 추가</p>
-                            <input type="file" id="international_review_input" multiple accept=".csv, .png, .jpg, .jpeg" style="display: none;">
+                            <input type="file" id="international_review_input" multiple accept=".csv, .xlsx, .xls, .png, .jpg, .jpeg" style="display: none;">
                         </div>
                         <div class="preview-area" id="international_review_preview"></div>
                     </div>
@@ -426,7 +421,7 @@
                 </div>
             <a class="prev" onclick="plusSlides(-1, 'mainSlideshowContainer')">&#10094;</a>
             <a class="next" onclick="plusSlides(1, 'mainSlideshowContainer')">&#10095;</a>
-            <p id="noImagesMessage" style="color: #bbb; margin-top: 20px;">업로드된 이미지 파일이 없습니다. (CSV 파일은 분석 서버로 전송됩니다)</p>
+            <p id="noImagesMessage" style="color: #bbb; margin-top: 20px;">업로드된 이미지 파일이 없습니다. (CSV/XLSX 파일은 분석 시뮬레이션에 사용됩니다)</p>
 
             <button type="button" id="generateButton" class="action-button">아이디어 제안서 생성 요청 (API 호출)</button>
         </section>
@@ -439,7 +434,7 @@
                 <div id="loading" class="hidden">
                     <div class="spinner"></div>
                     <p>아이디어를 생성 중입니다...</p>
-                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">(모든 파일은 분석 서버에서 요약된 후 GPT-4o로 전송됩니다.)</p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">(업로드된 파일은 브라우저 내에서 각 분석 모델의 역할에 따라 시뮬레이션 보고서로 요약된 후 GPT-4o에 전달됩니다.)</p>
                 </div>
                 <p id="initialResultMessage">생성된 아이디어 제안서 결과가 여기에 나타납니다.</p>
             </div>
@@ -452,14 +447,11 @@
         /* --- JavaScript 로직 시작 --- */
         document.addEventListener('DOMContentLoaded', () => {
             const OPENAI_API_KEY = document.querySelector('meta[name="openai-api-key"]').getAttribute('content');
-            const PLACEHOLDER_KEY = ""; // 이전 코드에서 수정: "" 또는 null로 설정
+            const PLACEHOLDER_KEY = ""; 
 
             const OPENAI_ENDPOINT = "https://api.openai.com/v1/chat/completions";
             const MODEL_NAME = "gpt-4o"; 
             
-            // ⭐⭐⭐ 분석 서버 엔드포인트: 실제 구축한 서버 URL로 변경해야 하며, 이 서버가 모델 라우팅을 담당합니다. ⭐⭐⭐
-            const ANALYSIS_SERVER_ENDPOINT = "http://YOUR_ANALYSIS_SERVER_URL/api/analyze"; 
-
             // 섹션 요소들
             const uploadSection = document.getElementById('upload-section');
             const slideshowSection = document.getElementById('slideshow-section');
@@ -538,10 +530,12 @@
             }
             
             // --- 파일 처리 및 미리보기 함수 ---
-
-            function getFileIcon(type) {
-                if (type.includes('image/')) return '🖼️';
-                if (type.includes('csv')) return '📊';
+            
+            // 파일 객체를 받아 CSV/Excel 타입 체크
+            function getFileIcon(file) {
+                if (file.type.includes('image/')) return '🖼️';
+                const isDataFile = file.type.includes('csv') || file.type.includes('excel') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
+                if (isDataFile) return '📊';
                 return '📄';
             }
 
@@ -566,7 +560,7 @@
 
                     const icon = document.createElement('span');
                     icon.className = 'file-icon';
-                    icon.textContent = getFileIcon(file.type);
+                    icon.textContent = getFileIcon(file); 
                     fileItem.appendChild(icon);
 
                     const fileName = document.createElement('span');
@@ -615,7 +609,6 @@
                     const img = document.createElement('img');
                     
                     // 파일 객체에 미리 저장된 Base64 URL 사용
-                    // fileToDataContent 호출을 비동기로 처리
                     if(file.dataUrl) {
                         img.src = file.dataUrl;
                     } else {
@@ -632,7 +625,6 @@
                     caption.textContent = `[${categoryMap[file.category]}] ${file.name} (${index + 1}/${allImageFiles.length})`;
                     
                     slide.appendChild(img);
-                    slide.appendChild(caption);
                     mainSlideshowContainer.appendChild(slide);
                 });
 
@@ -648,7 +640,11 @@
 
             function handleFiles(files, categoryId) {
                 const newFiles = [...files].filter(file => 
-                    file.type.includes('image/') || file.type.includes('csv')
+                    file.type.includes('image/') || 
+                    file.type.includes('csv') || 
+                    file.type.includes('excel') ||
+                    file.name.endsWith('.xlsx') || 
+                    file.name.endsWith('.xls')
                 );
                 
                 const existingFileNames = uploadedFilesByCategory[categoryId].map(f => f.name);
@@ -667,91 +663,93 @@
                 return new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.onload = () => { 
-                        // dataUrl 속성에 저장하여 재활용할 수 있도록 파일 객체에 직접 추가
                         file.dataUrl = reader.result; 
                         resolve(reader.result); 
                     };
                     reader.onerror = error => reject(error);
 
-                    if (file.type.includes('csv') || file.type.includes('text')) {
-                        // 텍스트 파일(CSV)은 백엔드 전송을 위해 전체 내용을 읽음
-                        reader.readAsText(file);
+                    const isDataFile = file.type.includes('csv') || file.type.includes('text') || file.type.includes('excel') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
+
+                    if (isDataFile) {
+                        // 브라우저에서 CSV/텍스트 파일을 읽어 라인 수를 시뮬레이션에 사용
+                        reader.readAsText(file); 
                     } else { // image/png, image/jpeg 등
-                        // 이미지 파일은 Base64 URL로 읽어 나중에 GPT-4o에 전달 준비
                         reader.readAsDataURL(file);
                     }
                 });
             }
 
-            // ⭐⭐⭐ 1. 파일별 모델 라우팅 및 분석 실행 (Call Analysis Model) ⭐⭐⭐
+            // ⭐⭐⭐ 1. 파일별 모델 라우팅 및 분석 실행 (브라우저 내 시뮬레이션) ⭐⭐⭐
             async function callAnalysisModel() {
-                // 이 함수는 실제 서버 API 호출을 시뮬레이션하고,
-                // 파일 유형/카테고리에 따라 다른 모델이 사용된다는 것을 가정합니다.
                 
                 const allFiles = Object.values(uploadedFilesByCategory).flat();
                 if (allFiles.length === 0) {
                     return "분석할 파일이 없습니다.";
                 }
 
-                // 분석 서버에 보낼 데이터 수집
+                // 분석 서버에 보낼 데이터 수집 (시뮬레이션 용도)
                 const filesToSend = await Promise.all(allFiles.map(async (file) => {
-                    // 파일의 전체 내용을 읽어서 Base64 또는 텍스트로 준비
                     const content = await fileToDataContent(file);
                     return {
                         name: file.name,
                         type: file.type,
                         category: file.category,
-                        content: content // 이미지: Base64, CSV: 전체 텍스트
+                        content: content 
                     };
                 }));
 
                 // -----------------------------------------------------------
-                // 💡 [핵심] 실제 서버 API 호출 및 모델 라우팅 시뮬레이션
+                // 💡 [핵심] Python 분석 모델의 결과 시뮬레이션 (브라우저에서 직접 처리)
                 // -----------------------------------------------------------
                 
-                // 실제 구현:
-                // try {
-                //     const response = await fetch(ANALYSIS_SERVER_ENDPOINT, {
-                //         method: 'POST',
-                //         headers: { 'Content-Type': 'application/json' },
-                //         body: JSON.stringify({ files: filesToSend })
-                //     });
-                //     if (!response.ok) throw new Error(`Server error: ${response.statusText}`);
-                //     const result = await response.json();
-                //     return result.fullAnalysisReport; // 서버에서 요약된 최종 텍스트 리포트 반환
-                // } catch (error) {
-                //     console.error("분석 서버 호출 오류:", error);
-                //     return "분석 서버 오류로 인해 데이터 분석을 완료하지 못했습니다.";
-                // }
-                
-                // 현재 HTML/JS 환경에서는 가상으로 결과 생성 시뮬레이션:
                 const analysisResults = [];
                 filesToSend.forEach(file => {
                     let report;
                     const categoryName = categoryMap[file.category];
+                    
+                    const isDataFile = file.type.includes('csv') || file.type.includes('excel') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
+                    // 텍스트로 읽은 파일의 라인 수를 기반으로 데이터 양 시뮬레이션
+                    const numLines = file.content && isDataFile ? file.content.split('\n').length - 1 : 0;
+                    const fileDescription = isDataFile ? `총 ${numLines}개 데이터` : `이미지 파일`;
+                    
+                    // --- A. CSV/Excel (데이터) 파일 처리: 리뷰/트렌드 모델 라우팅 시뮬레이션 ---
+                    if (isDataFile) {
+                        if (file.category === 'domestic_review') {
+                            // ⭐ coupang_review_analysis.py 시뮬레이션
+                            report = `[${categoryName} - 리뷰 분석] ${file.name} (${fileDescription}) 분석: **쿠팡 리뷰** 기준, 긍정 평가는 '빠른 배송', 부정 평가는 **잦은 품절 및 불량률**에 대한 불만이 지배적입니다. (모델: coupang_review_analysis.py 시뮬레이션)`;
+                        
+                        } else if (file.category === 'international_review') {
+                            // ⭐ amazon_reviews_analyze.py 시뮬레이션
+                            report = `[${categoryName} - 리뷰 분석] ${file.name} (${fileDescription}) 분석: **아마존 리뷰** 기준, 주요 긍정 키워드는 'Taste', **부정 키워드는 'bloating' 및 'no effect'** 입니다. (모델: amazon_reviews_analyze.py 시뮬레이션)`;
 
-                    if (file.type.includes('csv')) {
-                         // CSV 파일 (리뷰/트렌드) -> Python 기반 분석 모델 (예: amazon_reviews_analyze.py) 사용 가정
-                         if (file.category.includes('review')) {
-                             report = `[${categoryName} - 리뷰 분석 보고서] ${file.name} (총 ${file.content.split('\n').length - 1}개 리뷰) 분석 결과: 고객들은 **효과 (effectiveness)**와 **맛/냄새 (taste/smell)**를 가장 많이 언급하며, 긍정 평가는 복용 편리성, 부정 평가는 효과 부족과 부작용에 집중되었습니다. 키워드는 'bloating', 'easy swallow' 등이 도출되었습니다.`;
-                         } else { // trend
-                             report = `[${categoryName} - 트렌드 분석 보고서] ${file.name} 분석 결과: 지난 6개월간 '다이어트 유산균' 검색량은 **20% 상승**하여 시장의 관심이 커지고 있습니다. 특히 '식단 관리'와 연관된 키워드 유입이 두드러집니다.`;
-                         }
-                         analysisResults.push(report);
+                        } else if (file.category === 'domestic_trend') {
+                            // ⭐ Naver_trend.py 시뮬레이션 (성장률, 최고 관심도 반영)
+                            const growth = (Math.random() * 20 - 5).toFixed(1); 
+                            const topKeyword = ["저당", "비건", "키토", "단백질"][Math.floor(Math.random() * 4)];
+                            report = `[${categoryName} - 통계 분석] ${file.name} (${fileDescription}) 분석: **최근 검색량 성장률은 ${growth}%**를 기록했습니다. **가장 빠르게 성장한 키워드**는 '**${topKeyword}**'로 확인되어, 해당 영역의 신제품 개발이 시급합니다. (모델: Naver_trend.py 시뮬레이션)`;
 
+                        } else if (file.category === 'international_trend') {
+                            // ⭐ global_trend.py 시뮬레이션 (성장률, 최고 관심도 반영)
+                            const growth = (Math.random() * 10 + 5).toFixed(1); 
+                            const topKeyword = ["Sustainability", "Plant-based", "Keto-friendly"][Math.floor(Math.random() * 3)];
+                            report = `[${categoryName} - 통계 분석] ${file.name} (${fileDescription}) 분석: **글로벌 트렌드 성장률은 ${growth}%**로 꾸준하며, **가장 높은 관심도**를 보이는 영역은 '**${topKeyword}**'로 확인됩니다. (모델: global_trend.py 시뮬레이션)`;
+                        }
+                        analysisResults.push(report);
+
+                    // --- B. 이미지 파일 처리: VLM 모델 라우팅 시뮬레이션 ---
                     } else if (file.type.includes('image/')) {
-                         // 이미지 파일 -> VLM/OCR 모델 사용 가정
-                         if (file.name.toLowerCase().includes('chart') || file.name.toLowerCase().includes('graph')) {
-                             report = `[${categoryName} - 차트/이미지 해석] ${file.name} 해석: 이미지에는 시장 점유율을 보여주는 **파이 차트**가 포함되어 있으며, 주요 경쟁사 A가 45%로 압도적입니다. 이는 **시각적 분석 모델(VLM)**을 통해 추출되었습니다.`;
-                         } else {
-                             report = `[${categoryName} - 이미지 설명] ${file.name} 해석: **객체 인식 모델**을 통해 분석한 결과, 해당 이미지는 깔끔한 **화이트 & 블루 색상**의 패키지 디자인을 보여주며, 프리미엄 타겟을 위한 시각적 요소가 강조되어 있습니다.`;
-                         }
-                         analysisResults.push(report);
+                        // ⭐ vlm_analyzer.py 시뮬레이션 (이미지 파일은 VLM을 통해 분석된다고 가정)
+                        if (file.name.toLowerCase().includes('chart') || file.name.toLowerCase().includes('graph')) {
+                            report = `[${categoryName} - 차트/이미지 해석] ${file.name} (${fileDescription}) 해석: **VLM** 분석 결과, 이미지에는 **경쟁사 A, B, C의 시장 점유율을 보여주는 막대 그래프**가 포함되어 있으며, A사가 50%로 시장을 주도하고 있습니다. (모델: vlm_analyzer.py 시뮬레이션)`;
+                        } else {
+                            report = `[${categoryName} - 이미지 설명] ${file.name} (${fileDescription}) 해석: **객체 인식** 결과, '청량한 블루' 계열의 패키지와 '친환경' 재질이 강조되어 타겟 고객층에게 **건강하고 신뢰감 있는 인상**을 줍니다. (모델: vlm_analyzer.py 시뮬레이션)`;
+                        }
+                        analysisResults.push(report);
                     }
                 });
 
                 // 모든 분석 결과를 하나의 최종 보고서 텍스트로 결합
-                let finalReport = "--- 파일 분석 결과 요약 리포트 (백엔드 서버 생성) ---\n\n";
+                let finalReport = "--- 파일 분석 결과 요약 리포트 (Python 모델 역할 시뮬레이션) ---\n\n";
                 finalReport += analysisResults.join("\n\n---\n\n");
                 finalReport += "\n\n------------------------------------------------------\n";
 
@@ -776,16 +774,16 @@
                     ${analysisReport}
 
                     **[요청 사항]**
-                    1. 신제품 아이디어 명칭 및 핵심 컨셉을 도출합니다.
-                    2. 분석 결과(리뷰, 트렌드, 이미지 해석)를 근거로 한 예상 고객층(타겟) 및 시장 배경을 설명합니다.
-                    3. 주요 기능 및 차별화 포인트를 3~5가지 불릿 리스트로 명시합니다. (분석된 불만 영역 해결 방안 포함)
+                    1. 신제품 아이디어 명칭 및 핵심 컨셉을 도출합니다. (분석 결과 기반)
+                    2. 분석 결과(리뷰, 국내외 트렌드, 이미지 해석)를 근거로 한 예상 고객층(타겟) 및 시장 배경을 설명합니다. (각 분석 모델의 결과 명확히 언급)
+                    3. 주요 기능 및 차별화 포인트를 3~5가지 불릿 리스트로 명시합니다. (분석된 불만 영역 해결 방안 및 트렌드 키워드 포함)
                     4. 제안 결론 및 기대 효과를 요약합니다.
                 `;
 
                 // 텍스트 프롬프트는 비워둡니다 (모든 요청사항이 시스템 프롬프트에 포함됨)
                 const userTextContent = {
                     type: "text",
-                    text: "위의 분석 리포트와 이미지 자료를 바탕으로 신제품 아이디어 제안서를 작성해 주세요."
+                    text: "위의 분석 리포트와 이미지 자료를 바탕으로 신제품 아이디어 제안서를 작성해 주세요. 분석 모델이 제시한 핵심 트렌드와 리뷰의 불만 사항을 반영해야 합니다."
                 };
 
                 // 멀티모달 메시지 구조: 시스템 프롬프트는 텍스트로, 이미지와 최종 텍스트 요청은 user 메시지로 통합
@@ -868,45 +866,76 @@
                     showSection('slideshow-section');
                     // Step 2 버튼 활성화/비활성화
                     const totalImages = Object.values(uploadedFilesByCategory).flat().filter(f => f.type.startsWith('image/')).length;
-                    generateButton.disabled = totalImages === 0 && Object.values(uploadedFilesByCategory).flat().filter(f => f.type.includes('csv')).length === 0;
+                    
+                    const totalDataFiles = Object.values(uploadedFilesByCategory).flat().filter(f => 
+                        f.type.includes('csv') || f.type.includes('excel') || f.name.endsWith('.xlsx') || f.name.endsWith('.xls')
+                    ).length;
 
+                    generateButton.disabled = totalImages === 0 && totalDataFiles === 0;
+                    if (generateButton.disabled) {
+                        alert("최소한 하나의 파일(CSV/XLSX 또는 이미지)을 업로드해야 제안서 생성을 요청할 수 있습니다.");
+                    }
                 });
 
                 // 제안서 생성 버튼 (Step 2 -> Step 3)
                 generateButton.addEventListener('click', async () => {
                     generateButton.disabled = true;
                     showSection('result-section');
+                    
+                    // 🚨 이 부분에서 이전 내용을 확실히 지워줍니다. 
+                    resultContent.innerHTML = ''; 
+                    
                     initialResultMessage.classList.add('hidden');
                     loading.classList.remove('hidden');
-                    resultContent.innerHTML = ''; // 기존 내용 초기화
-                    resultContent.appendChild(loading);
+                    resultContent.appendChild(loading); // 로딩 엘리먼트를 다시 추가
 
-
-                    // 1. 분석 서버를 통한 텍스트 리포트 생성 (멀티 모델 라우팅)
+                    // 1. 브라우저를 통한 텍스트 리포트 생성 (멀티 모델 시뮬레이션)
                     const analysisReport = await callAnalysisModel();
                     
                     // 2. GPT-4o에 전달할 이미지 Base64 데이터 수집
                     const imageBase64Payloads = Object.values(uploadedFilesByCategory)
                         .flat()
                         .filter(f => f.type.startsWith('image/'))
-                        .map(f => f.dataUrl); // 이미 fileToDataContent에서 dataUrl에 저장됨
+                        .map(f => f.dataUrl); 
 
                     
                     // 3. GPT-4o 호출
                     const gptResponse = await callGPT4o(analysisReport, imageBase64Payloads);
                     
-                    // 4. 결과 출력
+                    // 4. 결과 출력: marked.parse()를 사용하여 Markdown을 HTML로 변환합니다.
                     loading.classList.add('hidden');
-                    resultContent.innerHTML = marked.parse(gptResponse); 
+                    
+                    // 🌟 결과 변환 및 삽입 (Markdown 파싱 핵심!)
+                    if (typeof marked !== 'undefined') {
+                        resultContent.innerHTML = marked.parse(gptResponse); 
+                    } else {
+                        resultContent.innerHTML = `<p style="color:red;">오류: Marked.js 라이브러리를 찾을 수 없습니다. (CDN 로드 실패 가능성)</p><pre>${gptResponse}</pre>`;
+                    }
+                    // ---------------------------------------------
 
                     generateButton.disabled = false;
                 });
                 
                 // 다시 시작 버튼
                 restartBtn.addEventListener('click', () => {
+                     // 파일 목록 및 섹션 초기화
+                     uploadedFilesByCategory = {
+                        domestic_trend: [],
+                        international_trend: [],
+                        domestic_review: [],
+                        international_review: []
+                     };
+                     
+                     // 미리보기 영역 초기화
+                     document.querySelectorAll('.preview-area').forEach(el => el.innerHTML = '');
+                     
+                     // 결과 섹션 초기화
+                     resultContent.innerHTML = '';
+                     resultContent.appendChild(initialResultMessage);
+                     initialResultMessage.classList.remove('hidden');
+
                      showSection('upload-section');
-                     // 모든 상태 초기화 (필요하다면)
-                     // window.location.reload(); 
+                     updateNextButtonState(); 
                 });
 
                 // 초기 API 키 상태 확인
