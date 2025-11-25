@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>신제품 아이디어 제안서</title>
 
-    
-<meta name="openai-api-key" content="">
+    <!-- GPT API 키 (필요하면 채워 넣기) -->
+    <meta name="openai-api-key" content="">
 
+    <!-- Markdown 파서 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <style>
-        /* --- CSS 스타일 시작 --- */
+        /* --- 공통 레이아웃 --- */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f7f9;
@@ -26,11 +27,11 @@
 
         .container {
             background-color: #fff;
-            padding: 30px; 
+            padding: 30px;
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 900px; 
+            max-width: 900px;
         }
 
         h1 {
@@ -40,8 +41,7 @@
             border-bottom: 2px solid #e0e0e0;
             padding-bottom: 10px;
         }
-        
-        /* Step 표시 스타일 */
+
         .step-indicator {
             text-align: center;
             margin-bottom: 20px;
@@ -52,7 +52,6 @@
         .step-indicator span {
             color: #1a5cff;
         }
-
 
         .card {
             background-color: #f9f9f9;
@@ -70,20 +69,17 @@
             margin-bottom: 20px;
         }
 
-        /* 파일 입력 영역 컨테이너 - 반응형 Flex/Grid 적용 */
         .input-group-container {
             display: grid;
-            grid-template-columns: 1fr; 
+            grid-template-columns: 1fr;
             gap: 20px;
             margin-bottom: 20px;
         }
-        /* 데스크탑에서 2열 배치 */
         @media (min-width: 768px) {
             .input-group-container {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
 
         .input-group {
             border: 1px solid #ddd;
@@ -98,8 +94,7 @@
             margin-top: 0;
             margin-bottom: 10px;
         }
-        
-        /* 파일 드롭 영역 */
+
         .file-drop-area {
             border: 2px dashed #ccc;
             border-radius: 6px;
@@ -108,30 +103,29 @@
             cursor: pointer;
             transition: border-color 0.3s;
             margin-top: 10px;
-            display: flex; 
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 80px; 
+            min-height: 80px;
         }
-
-        .file-drop-area:hover, .file-drop-area.drag-over {
+        .file-drop-area:hover,
+        .file-drop-area.drag-over {
             border-color: #0088ff;
             background-color: #eaf1ff;
         }
 
         .file-drop-area .icon-placeholder {
-            font-size: 2.5em; 
+            font-size: 2.5em;
             color: #0088ff;
             margin-bottom: 5px;
         }
         .file-drop-area p {
-             font-size: 0.9em;
-             color: #666;
-             margin: 0;
+            font-size: 0.9em;
+            color: #666;
+            margin: 0;
         }
 
-        /* 파일 미리보기 영역 */
         .preview-area {
             margin-top: 10px;
             display: flex;
@@ -139,7 +133,6 @@
             gap: 5px;
             border-top: 1px solid #eee;
             padding-top: 5px;
-            transition: background-color 0.2s; 
         }
 
         .file-item {
@@ -162,10 +155,9 @@
         }
 
         .file-item img {
-            display: none; 
+            display: none;
         }
-        
-        /* 버튼 스타일 */
+
         .action-button {
             display: block;
             width: 100%;
@@ -179,75 +171,67 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
         .action-button:hover:not(:disabled) {
             background-color: #0045e0;
         }
-
         .action-button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
-        
-        /* 결과 섹션 */
+
         .result-content {
-            min-height: 350px; 
-            padding: 20px; 
-            border: 3px solid #1a5cff; 
+            min-height: 350px;
+            padding: 20px;
+            border: 3px solid #1a5cff;
             border-radius: 8px;
-            background-color: #f0f3ff; 
-            position: relative; 
-            font-size: 1.1em; 
-            line-height: 1.7; 
+            background-color: #f0f3ff;
+            position: relative;
+            font-size: 1.1em;
+            line-height: 1.7;
             color: #000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            overflow: auto; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: auto;
         }
-        
-        /* Marked.js로 파싱된 결과를 위한 스타일 재정의 */
-        .result-content h1, .result-content h2, .result-content h3, .result-content h4 {
-             color: #1a5cff; 
-             border-bottom: 1px solid #c0c0c0; 
-             padding-bottom: 5px;
-             margin-top: 25px;
-             font-weight: bold;
+        .result-content h1,
+        .result-content h2,
+        .result-content h3,
+        .result-content h4 {
+            color: #1a5cff;
+            border-bottom: 1px solid #c0c0c0;
+            padding-bottom: 5px;
+            margin-top: 25px;
+            font-weight: bold;
         }
-        
-        /* 폰트 크기 조정 */
         .result-content h2 { font-size: 1.8em; }
         .result-content h3 { font-size: 1.5em; }
         .result-content h4 { font-size: 1.3em; }
 
-        .result-content p, .result-content ul, .result-content ol {
+        .result-content p,
+        .result-content ul,
+        .result-content ol {
             line-height: 1.6;
             margin-bottom: 15px;
         }
         .result-content ul {
-            padding-left: 25px; 
+            padding-left: 25px;
             list-style-type: disc;
         }
         .result-content strong {
-            font-weight: 700; 
+            font-weight: 700;
             color: #111;
         }
 
-
-        /* 로딩 애니메이션 */
         #loading {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex; 
+            inset: 0;
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: rgba(255, 255, 255, 0.95); 
-            z-index: 20; 
+            background-color: rgba(255,255,255,0.95);
+            z-index: 20;
             color: #1a5cff;
             text-align: center;
-            margin-top: 0; 
         }
 
         .spinner {
@@ -257,81 +241,74 @@
             width: 30px;
             height: 30px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
+            margin-bottom: 10px;
         }
 
-        .hidden {
-            display: none !important; 
-        }
+        .hidden { display: none !important; }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        /* --- Step 2: 이미지 슬라이드쇼 화면 스타일 --- */
+
+        /* Step2 슬라이드쇼 스타일 (기존 UI 유지) */
         #slideshow-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            min-height: 70vh; 
-            background-color: #333; 
+            min-height: 70vh;
+            background-color: #333;
             color: white;
             border-radius: 8px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
         #slideshow-section h2 {
             color: white;
-            border-color: #00bcd4; 
+            border-color: #00bcd4;
         }
-        #slideshow-section .slideshow-container {
+
+        .slideshow-container {
             width: 100%;
-            max-width: 850px; 
+            max-width: 850px;
             margin: 20px auto;
             position: relative;
-            min-height: 500px; 
-            overflow: hidden; 
-            padding: 0 40px; 
+            min-height: 500px;
+            overflow: hidden;
+            padding: 0 40px;
             box-sizing: border-box;
         }
-        #slideshow-section .mySlides {
+        .mySlides {
             display: none;
             text-align: center;
-            height: 100%; 
+            height: 100%;
         }
-        #slideshow-section .mySlides img {
+        .mySlides img {
             width: auto;
-            max-width: 100%; 
-            max-height: 60vh; 
-            display: block;
+            max-width: 100%;
+            max-height: 60vh;
             margin: 0 auto;
-            border: 1px solid #555;
             border-radius: 5px;
-            object-fit: contain; 
+            border: 1px solid #555;
+            object-fit: contain;
         }
-        #slideshow-section .mySlides .caption {
+        .caption {
             color: #f2f2f2;
             font-size: 15px;
             padding: 8px 12px;
             position: absolute;
-            bottom: 0; 
-            left: 40px; 
-            right: 40px; 
-            width: auto; 
-            text-align: center;
+            bottom: 0;
+            left: 40px;
+            right: 40px;
             background-color: rgba(0,0,0,0.6);
-            box-sizing: border-box; 
-            border-radius: 0 0 5px 5px;
         }
-        #slideshow-section .prev, #slideshow-section .next {
+
+        .prev, .next {
             cursor: pointer;
             position: absolute;
             top: 50%;
-            transform: translateY(-50%); 
-            width: auto;
+            transform: translateY(-50%);
             padding: 16px;
             color: white;
             font-weight: bold;
@@ -339,613 +316,452 @@
             transition: 0.6s ease;
             user-select: none;
             background-color: rgba(0,0,0,0.5);
-            z-index: 10; 
         }
-        #slideshow-section .prev {
-            left: 0; 
-            border-radius: 0 3px 3px 0;
-        }
-        #slideshow-section .next {
-            right: 0; 
-            border-radius: 3px 0 0 3px;
-        }
-        #slideshow-section .prev:hover, #slideshow-section .next:hover {
+        .prev { left: 0; border-radius: 0 3px 3px 0; }
+        .next { right: 0; border-radius: 3px 0 0 3px; }
+        .prev:hover, .next:hover {
             background-color: rgba(0,0,0,0.8);
         }
-        /* --- CSS 스타일 끝 --- */
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>신제품 아이디어 제안서</h1>
 
-        
-<section id="upload-section" class="card">
+        <!-- Step 1: 자료 업로드 -->
+        <section id="upload-section" class="card">
             <p class="step-indicator"><span>Step 1.</span> 분석 자료 업로드</p>
-            <h2>자료 업로드 </h2>
+            <h2>자료 업로드</h2>
+
             <form id="uploadForm">
-                
                 <div class="input-group-container">
-                    
                     <div class="input-group" data-category="domestic_trend">
-                        <h3>1. 국내 트렌드 </h3>
+                        <h3>1. 국내 트렌드</h3>
                         <div class="file-drop-area" data-input-id="domestic_trend_input">
                             <span class="icon-placeholder">➕</span>
                             <p>클릭 또는 드래그하여 파일 추가</p>
-                            <input type="file" id="domestic_trend_input" multiple accept=".csv, .xlsx, .xls, .png, .jpg, .jpeg" style="display: none;">
+                            <input type="file" id="domestic_trend_input" multiple
+                                   accept=".csv,.xlsx,.xls,.png,.jpg,.jpeg" style="display:none;">
                         </div>
                         <div class="preview-area" id="domestic_trend_preview"></div>
                     </div>
 
                     <div class="input-group" data-category="international_trend">
-                        <h3>2. 해외 트렌드 </h3>
+                        <h3>2. 해외 트렌드</h3>
                         <div class="file-drop-area" data-input-id="international_trend_input">
                             <span class="icon-placeholder">➕</span>
                             <p>클릭 또는 드래그하여 파일 추가</p>
-                            <input type="file" id="international_trend_input" multiple accept=".csv, .xlsx, .xls, .png, .jpg, .jpeg" style="display: none;">
+                            <input type="file" id="international_trend_input" multiple
+                                   accept=".csv,.xlsx,.xls,.png,.jpg,.jpeg" style="display:none;">
                         </div>
                         <div class="preview-area" id="international_trend_preview"></div>
                     </div>
 
                     <div class="input-group" data-category="domestic_review">
-                        <h3>3. 국내 리뷰 </h3>
+                        <h3>3. 국내 리뷰</h3>
                         <div class="file-drop-area" data-input-id="domestic_review_input">
                             <span class="icon-placeholder">➕</span>
                             <p>클릭 또는 드래그하여 파일 추가</p>
-                            <input type="file" id="domestic_review_input" multiple accept=".csv, .xlsx, .xls, .png, .jpg, .jpeg" style="display: none;">
+                            <input type="file" id="domestic_review_input" multiple
+                                   accept=".csv,.xlsx,.xls,.png,.jpg,.jpeg" style="display:none;">
                         </div>
                         <div class="preview-area" id="domestic_review_preview"></div>
                     </div>
 
                     <div class="input-group" data-category="international_review">
-                        <h3>4. 해외 리뷰 </h3>
+                        <h3>4. 해외 리뷰</h3>
                         <div class="file-drop-area" data-input-id="international_review_input">
                             <span class="icon-placeholder">➕</span>
                             <p>클릭 또는 드래그하여 파일 추가</p>
-                            <input type="file" id="international_review_input" multiple accept=".csv, .xlsx, .xls, .png, .jpg, .jpeg" style="display: none;">
+                            <input type="file" id="international_review_input" multiple
+                                   accept=".csv,.xlsx,.xls,.png,.jpg,.jpeg" style="display:none;">
                         </div>
                         <div class="preview-area" id="international_review_preview"></div>
                     </div>
-
                 </div>
 
-                <button type="button" id="nextToSlideshowBtn" class="action-button">이미지 미리보기 단계로 이동 &rarr;</button>
+                <button type="button" id="nextToSlideshowBtn" class="action-button">
+                    모델 분석 결과 시각화 단계로 이동 →
+                </button>
             </form>
         </section>
-        
-        
-<section id="slideshow-section" class="card hidden">
-            <p class="step-indicator"><span>Step 2.</span> 이미지 미리보기 및 제출</p>
-            <h2>전체 이미지 미리보기 확인</h2>
-            <div id="mainSlideshowContainer" class="slideshow-container">
-                </div>
+        <!-- Step 2: 서버 분석 결과 시각화 -->
+        <section id="slideshow-section" class="card hidden">
+            <p class="step-indicator"><span>Step 2.</span> 분석 모델 시각화 결과</p>
+            <h2>모델 분석 이미지 미리보기</h2>
+
+            <div id="mainSlideshowContainer" class="slideshow-container"></div>
+
             <a class="prev" onclick="plusSlides(-1, 'mainSlideshowContainer')">&#10094;</a>
             <a class="next" onclick="plusSlides(1, 'mainSlideshowContainer')">&#10095;</a>
-            <p id="noImagesMessage" style="color: #bbb; margin-top: 20px;">업로드된 이미지 파일이 없습니다. (CSV/XLSX 파일은 분석 시뮬레이션에 사용됩니다)</p>
 
-            <button type="button" id="generateButton" class="action-button">아이디어 제안서 생성 요청 (API 호출)</button>
+            <p id="noImagesMessage" style="color:#bbb;margin-top:20px;">
+                현재 표시할 분석 이미지가 없습니다.
+            </p>
+
+            <button type="button" id="goToGPTButton" class="action-button">
+                분석 요약 기반 제안서 생성 요청 →
+            </button>
         </section>
 
-        
-<section id="result-section" class="card hidden">
+
+        <!-- Step 3: GPT 결과 -->
+        <section id="result-section" class="card hidden">
             <p class="step-indicator"><span>Step 3.</span> 생성 결과</p>
-            <h2>생성 결과</h2>
+            <h2>최종 제안서 생성 결과</h2>
+
             <div id="resultContent" class="result-content">
                 <div id="loading" class="hidden">
                     <div class="spinner"></div>
-                    <p>아이디어를 생성 중입니다...</p>
-                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">(업로드된 파일은 브라우저 내에서 각 분석 모델의 역할에 따라 시뮬레이션 보고서로 요약된 후 GPT-4o에 전달됩니다.)</p>
+                    <p>아이디어 제안서를 생성하는 중입니다...</p>
                 </div>
-                <p id="initialResultMessage">생성된 아이디어 제안서 결과가 여기에 나타납니다.</p>
+
+                <p id="initialResultMessage">GPT가 생성한 보고서가 여기에 표시됩니다.</p>
             </div>
-            
-            <button type="button" id="restartBtn" class="action-button" style="background-color: #6c757d;">&larr; 다시 파일 업로드로 돌아가기</button>
+
+            <button type="button" id="restartBtn" class="action-button"
+                style="background-color:#6c757d;">
+                ← 다시 업로드 화면으로 돌아가기
+            </button>
         </section>
-    </div>
-
-    <script>
-        /* --- JavaScript 로직 시작 --- */
-        document.addEventListener('DOMContentLoaded', () => {
-            const OPENAI_API_KEY = document.querySelector('meta[name="openai-api-key"]').getAttribute('content');
-            const PLACEHOLDER_KEY = ""; 
-
-            const OPENAI_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-            const MODEL_NAME = "gpt-4o"; 
-            
-            // 섹션 요소들
-            const uploadSection = document.getElementById('upload-section');
-            const slideshowSection = document.getElementById('slideshow-section');
-            const resultSection = document.getElementById('result-section');
-
-            // 버튼 요소들
-            const nextToSlideshowBtn = document.getElementById('nextToSlideshowBtn');
-            const generateButton = document.getElementById('generateButton');
-            const restartBtn = document.getElementById('restartBtn');
-
-            const resultContent = document.getElementById('resultContent');
-            const loading = document.getElementById('loading');
-            const initialResultMessage = document.getElementById('initialResultMessage'); 
-
-            const mainSlideshowContainer = document.getElementById('mainSlideshowContainer');
-            const noImagesMessage = document.getElementById('noImagesMessage');
-
-            let currentSlideIndex = 1; 
-
-            let uploadedFilesByCategory = {
-                domestic_trend: [],
-                international_trend: [],
-                domestic_review: [],
-                international_review: []
-            };
-            
-            const categoryMap = {
-                domestic_trend: "국내 트렌드",
-                international_trend: "해외 트렌드",
-                domestic_review: "국내 리뷰",
-                international_review: "해외 리뷰"
-            };
-
-            // --- 섹션 전환 함수 ---
-            function showSection(sectionId) {
-                const sections = [uploadSection, slideshowSection, resultSection];
-                sections.forEach(section => {
-                    if (section.id === sectionId) {
-                        section.classList.remove('hidden');
-                    } else {
-                        section.classList.add('hidden');
-                    }
-                });
-
-                if (sectionId === 'slideshow-section') {
-                    renderMainSlideshow();
-                }
-            }
-
-            // --- 슬라이드쇼 제어 함수 ---
-            window.plusSlides = function(n, containerId) {
-                showSlides(currentSlideIndex += n, containerId);
-            }
-
-            function showSlides(n, containerId) {
-                const container = document.getElementById(containerId);
-                if (!container) return;
-
-                let slides = container.getElementsByClassName("mySlides");
-                
-                if (slides.length === 0) {
-                    noImagesMessage.classList.remove('hidden');
-                    return;
-                } else {
-                    noImagesMessage.classList.add('hidden');
-                }
-
-                if (n > slides.length) {currentSlideIndex = 1}    
-                if (n < 1) {currentSlideIndex = slides.length}
-                
-                for (let i = 0; i < slides.length; i++) {
-                    slides[i].style.display = "none";  
-                }
-                
-                slides[currentSlideIndex-1].style.display = "block";  
-            }
-            
-            // --- 파일 처리 및 미리보기 함수 ---
-            
-            // 파일 객체를 받아 CSV/Excel 타입 체크
-            function getFileIcon(file) {
-                if (file.type.includes('image/')) return '🖼️';
-                const isDataFile = file.type.includes('csv') || file.type.includes('excel') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
-                if (isDataFile) return '📊';
-                return '📄';
-            }
-
-            function renderFilePreview(categoryId) {
-                const previewArea = document.getElementById(`${categoryId}_preview`);
-                if (!previewArea) return;
-
-                previewArea.innerHTML = '';
-                
-                uploadedFilesByCategory[categoryId].forEach(file => {
-                    const fileItem = document.createElement('div');
-                    fileItem.className = 'file-item';
-                    
-                    const removeBtn = document.createElement('span');
-                    removeBtn.textContent = '❌';
-                    removeBtn.style.cursor = 'pointer';
-                    removeBtn.style.marginLeft = '5px';
-                    removeBtn.onclick = (e) => {
-                        e.stopPropagation(); 
-                        removeFile(categoryId, file.name);
-                    };
-
-                    const icon = document.createElement('span');
-                    icon.className = 'file-icon';
-                    icon.textContent = getFileIcon(file); 
-                    fileItem.appendChild(icon);
-
-                    const fileName = document.createElement('span');
-                    fileName.textContent = file.name;
-                    fileItem.appendChild(fileName);
-                    fileItem.appendChild(removeBtn);
-
-                    previewArea.appendChild(fileItem);
-                });
-
-                updateNextButtonState();
-            }
-            
-            function updateNextButtonState() {
-                // API 키가 설정되어 있어야만 다음 단계로 이동 가능
-                const isApiKeySet = OPENAI_API_KEY && OPENAI_API_KEY.length > 0 && OPENAI_API_KEY !== PLACEHOLDER_KEY;
-                nextToSlideshowBtn.disabled = !isApiKeySet; 
-                if (!isApiKeySet) {
-                     console.warn("API Key가 설정되지 않아 다음 단계 버튼이 비활성화되었습니다. <meta name='openai-api-key' content='...'>를 설정해주세요.");
-                }
-            }
-
-            // 메인 슬라이드쇼 화면 렌더링 (Step 2)
-            function renderMainSlideshow() {
-                mainSlideshowContainer.innerHTML = ''; 
-                const allImageFiles = [];
-
-                for (const categoryId in uploadedFilesByCategory) {
-                    uploadedFilesByCategory[categoryId].forEach(file => {
-                        if (file.type.startsWith('image/')) {
-                            allImageFiles.push(file);
-                        }
-                    });
-                }
-
-                if (allImageFiles.length === 0) {
-                    noImagesMessage.classList.remove('hidden');
-                } else {
-                    noImagesMessage.classList.add('hidden');
-                }
-
-                allImageFiles.forEach((file, index) => {
-                    const slide = document.createElement('div');
-                    slide.className = 'mySlides fade';
-                    
-                    const img = document.createElement('img');
-                    
-                    // 파일 객체에 미리 저장된 Base64 URL 사용
-                    if(file.dataUrl) {
-                        img.src = file.dataUrl;
-                    } else {
-                        fileToDataContent(file).then(dataUrl => {
-                            img.src = dataUrl;
-                            file.dataUrl = dataUrl; // 추후 재활용을 위해 저장
-                        });
-                    }
-
-                    img.alt = file.name;
-                    
-                    const caption = document.createElement('div');
-                    caption.className = 'caption';
-                    caption.textContent = `[${categoryMap[file.category]}] ${file.name} (${index + 1}/${allImageFiles.length})`;
-                    
-                    slide.appendChild(img);
-                    mainSlideshowContainer.appendChild(slide);
-                });
-
-                currentSlideIndex = 1;
-                showSlides(currentSlideIndex, 'mainSlideshowContainer');
-            }
-            
-            function removeFile(categoryId, fileName) {
-                 uploadedFilesByCategory[categoryId] = uploadedFilesByCategory[categoryId].filter(file => file.name !== fileName);
-                 renderFilePreview(categoryId);
-                 updateNextButtonState(); 
-            }
-
-            function handleFiles(files, categoryId) {
-                const newFiles = [...files].filter(file => 
-                    file.type.includes('image/') || 
-                    file.type.includes('csv') || 
-                    file.type.includes('excel') ||
-                    file.name.endsWith('.xlsx') || 
-                    file.name.endsWith('.xls')
-                );
-                
-                const existingFileNames = uploadedFilesByCategory[categoryId].map(f => f.name);
-                const uniqueNewFiles = newFiles.filter(file => !existingFileNames.includes(file.name)).map(f => {
-                    f.category = categoryId; 
-                    return f;
-                });
-
-                uploadedFilesByCategory[categoryId] = [...uploadedFilesByCategory[categoryId], ...uniqueNewFiles];
-                
-                renderFilePreview(categoryId);
-            }
-
-            // 파일 전체 내용 읽기: Base64 URL 또는 전체 텍스트 반환
-            function fileToDataContent(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = () => { 
-                        file.dataUrl = reader.result; 
-                        resolve(reader.result); 
-                    };
-                    reader.onerror = error => reject(error);
-
-                    const isDataFile = file.type.includes('csv') || file.type.includes('text') || file.type.includes('excel') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
-
-                    if (isDataFile) {
-                        // 브라우저에서 CSV/텍스트 파일을 읽어 라인 수를 시뮬레이션에 사용
-                        reader.readAsText(file); 
-                    } else { // image/png, image/jpeg 등
-                        reader.readAsDataURL(file);
-                    }
-                });
-            }
-
-            // ⭐⭐⭐ 1. 파일별 모델 라우팅 및 분석 실행 (브라우저 내 시뮬레이션) ⭐⭐⭐
-            async function callAnalysisModel() {
-                
-                const allFiles = Object.values(uploadedFilesByCategory).flat();
-                if (allFiles.length === 0) {
-                    return "분석할 파일이 없습니다.";
-                }
-
-                // 분석 서버에 보낼 데이터 수집 (시뮬레이션 용도)
-                const filesToSend = await Promise.all(allFiles.map(async (file) => {
-                    const content = await fileToDataContent(file);
-                    return {
-                        name: file.name,
-                        type: file.type,
-                        category: file.category,
-                        content: content 
-                    };
-                }));
-
-                // -----------------------------------------------------------
-                // 💡 [핵심] Python 분석 모델의 결과 시뮬레이션 (브라우저에서 직접 처리)
-                // -----------------------------------------------------------
-                
-                const analysisResults = [];
-                filesToSend.forEach(file => {
-                    let report;
-                    const categoryName = categoryMap[file.category];
-                    
-                    const isDataFile = file.type.includes('csv') || file.type.includes('excel') || file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
-                    // 텍스트로 읽은 파일의 라인 수를 기반으로 데이터 양 시뮬레이션
-                    const numLines = file.content && isDataFile ? file.content.split('\n').length - 1 : 0;
-                    const fileDescription = isDataFile ? `총 ${numLines}개 데이터` : `이미지 파일`;
-                    
-                    // --- A. CSV/Excel (데이터) 파일 처리: 리뷰/트렌드 모델 라우팅 시뮬레이션 ---
-                    if (isDataFile) {
-                        if (file.category === 'domestic_review') {
-                            // ⭐ coupang_review_analysis.py 시뮬레이션
-                            report = `[${categoryName} - 리뷰 분석] ${file.name} (${fileDescription}) 분석: **쿠팡 리뷰** 기준, 긍정 평가는 '빠른 배송', 부정 평가는 **잦은 품절 및 불량률**에 대한 불만이 지배적입니다. (모델: coupang_review_analysis.py 시뮬레이션)`;
-                        
-                        } else if (file.category === 'international_review') {
-                            // ⭐ amazon_reviews_analyze.py 시뮬레이션
-                            report = `[${categoryName} - 리뷰 분석] ${file.name} (${fileDescription}) 분석: **아마존 리뷰** 기준, 주요 긍정 키워드는 'Taste', **부정 키워드는 'bloating' 및 'no effect'** 입니다. (모델: amazon_reviews_analyze.py 시뮬레이션)`;
-
-                        } else if (file.category === 'domestic_trend') {
-                            // ⭐ Naver_trend.py 시뮬레이션 (성장률, 최고 관심도 반영)
-                            const growth = (Math.random() * 20 - 5).toFixed(1); 
-                            const topKeyword = ["저당", "비건", "키토", "단백질"][Math.floor(Math.random() * 4)];
-                            report = `[${categoryName} - 통계 분석] ${file.name} (${fileDescription}) 분석: **최근 검색량 성장률은 ${growth}%**를 기록했습니다. **가장 빠르게 성장한 키워드**는 '**${topKeyword}**'로 확인되어, 해당 영역의 신제품 개발이 시급합니다. (모델: Naver_trend.py 시뮬레이션)`;
-
-                        } else if (file.category === 'international_trend') {
-                            // ⭐ global_trend.py 시뮬레이션 (성장률, 최고 관심도 반영)
-                            const growth = (Math.random() * 10 + 5).toFixed(1); 
-                            const topKeyword = ["Sustainability", "Plant-based", "Keto-friendly"][Math.floor(Math.random() * 3)];
-                            report = `[${categoryName} - 통계 분석] ${file.name} (${fileDescription}) 분석: **글로벌 트렌드 성장률은 ${growth}%**로 꾸준하며, **가장 높은 관심도**를 보이는 영역은 '**${topKeyword}**'로 확인됩니다. (모델: global_trend.py 시뮬레이션)`;
-                        }
-                        analysisResults.push(report);
-
-                    // --- B. 이미지 파일 처리: VLM 모델 라우팅 시뮬레이션 ---
-                    } else if (file.type.includes('image/')) {
-                        // ⭐ vlm_analyzer.py 시뮬레이션 (이미지 파일은 VLM을 통해 분석된다고 가정)
-                        if (file.name.toLowerCase().includes('chart') || file.name.toLowerCase().includes('graph')) {
-                            report = `[${categoryName} - 차트/이미지 해석] ${file.name} (${fileDescription}) 해석: **VLM** 분석 결과, 이미지에는 **경쟁사 A, B, C의 시장 점유율을 보여주는 막대 그래프**가 포함되어 있으며, A사가 50%로 시장을 주도하고 있습니다. (모델: vlm_analyzer.py 시뮬레이션)`;
-                        } else {
-                            report = `[${categoryName} - 이미지 설명] ${file.name} (${fileDescription}) 해석: **객체 인식** 결과, '청량한 블루' 계열의 패키지와 '친환경' 재질이 강조되어 타겟 고객층에게 **건강하고 신뢰감 있는 인상**을 줍니다. (모델: vlm_analyzer.py 시뮬레이션)`;
-                        }
-                        analysisResults.push(report);
-                    }
-                });
-
-                // 모든 분석 결과를 하나의 최종 보고서 텍스트로 결합
-                let finalReport = "--- 파일 분석 결과 요약 리포트 (Python 모델 역할 시뮬레이션) ---\n\n";
-                finalReport += analysisResults.join("\n\n---\n\n");
-                finalReport += "\n\n------------------------------------------------------\n";
-
-                return finalReport;
-            }
-
-
-            // ⭐⭐⭐ 2. GPT-4o API 호출 ⭐⭐⭐
-            async function callGPT4o(analysisReport, imagePayloads) {
-                
-                // 모든 이미지 파일의 Base64 데이터만 Content 배열에 추가
-                const imageContents = imagePayloads.map(imgBase64 => ({
-                    type: "image_url",
-                    image_url: { url: imgBase64 }
-                }));
-
-                // 시스템 프롬프트: 최종 보고서 텍스트를 포함해야 함
-                const systemPrompt = `
-                    당신은 전문적인 신제품 기획자입니다. 다음의 '파일 분석 결과 요약 리포트'와 '이미지 자료'를 종합하여 신제품 아이디어 제안서를 Markdown 형식으로 작성해주세요.
-
-                    **[파일 분석 결과 요약 리포트]**
-                    ${analysisReport}
-
-                    **[요청 사항]**
-                    1. 신제품 아이디어 명칭 및 핵심 컨셉을 도출합니다. (분석 결과 기반)
-                    2. 분석 결과(리뷰, 국내외 트렌드, 이미지 해석)를 근거로 한 예상 고객층(타겟) 및 시장 배경을 설명합니다. (각 분석 모델의 결과 명확히 언급)
-                    3. 주요 기능 및 차별화 포인트를 3~5가지 불릿 리스트로 명시합니다. (분석된 불만 영역 해결 방안 및 트렌드 키워드 포함)
-                    4. 제안 결론 및 기대 효과를 요약합니다.
-                `;
-
-                // 텍스트 프롬프트는 비워둡니다 (모든 요청사항이 시스템 프롬프트에 포함됨)
-                const userTextContent = {
-                    type: "text",
-                    text: "위의 분석 리포트와 이미지 자료를 바탕으로 신제품 아이디어 제안서를 작성해 주세요. 분석 모델이 제시한 핵심 트렌드와 리뷰의 불만 사항을 반영해야 합니다."
-                };
-
-                // 멀티모달 메시지 구조: 시스템 프롬프트는 텍스트로, 이미지와 최종 텍스트 요청은 user 메시지로 통합
-                const messages = [
-                    {
-                        role: "system",
-                        content: [{ type: "text", text: systemPrompt }]
-                    },
-                    {
-                        role: "user",
-                        content: [userTextContent, ...imageContents]
-                    }
-                ];
-
-                console.log("GPT-4o 메시지 구조:", messages);
-
-                try {
-                    const response = await fetch(OPENAI_ENDPOINT, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${OPENAI_API_KEY}`
-                        },
-                        body: JSON.stringify({
-                            model: MODEL_NAME,
-                            messages: messages,
-                            max_tokens: 3000 // 충분한 토큰 할당
-                        })
-                    });
-
-                    if (!response.ok) {
-                         const errorBody = await response.json();
-                         throw new Error(`OpenAI API 오류: ${response.status} - ${errorBody.error ? errorBody.error.message : response.statusText}`);
-                    }
-
-                    const data = await response.json();
-                    return data.choices[0].message.content;
-
-                } catch (error) {
-                    console.error("OpenAI API 호출 중 오류 발생:", error);
-                    return `**오류 발생:** ${error.message}. API 키를 확인하거나 네트워크 상태를 점검하십시오.`;
-                }
-            }
-            
-            // --- 이벤트 리스너 설정 ---
-
-            function setupEventListeners() {
-                // 파일 드롭/클릭 이벤트 설정
-                document.querySelectorAll('.input-group').forEach(group => {
-                    const categoryId = group.getAttribute('data-category');
-                    const dropArea = group.querySelector('.file-drop-area');
-                    const fileInput = document.getElementById(`${categoryId}_input`);
-
-                    dropArea.addEventListener('click', () => fileInput.click());
-                    fileInput.addEventListener('change', (e) => handleFiles(e.target.files, categoryId));
-
-                    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                        dropArea.addEventListener(eventName, (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }, false);
-                    });
-
-                    ['dragenter', 'dragover'].forEach(eventName => {
-                        dropArea.addEventListener(eventName, () => dropArea.classList.add('drag-over'), false);
-                    });
-
-                    ['dragleave', 'drop'].forEach(eventName => {
-                        dropArea.addEventListener(eventName, () => dropArea.classList.remove('drag-over'), false);
-                    });
-
-                    dropArea.addEventListener('drop', (e) => {
-                        const dt = e.dataTransfer;
-                        handleFiles(dt.files, categoryId);
-                    }, false);
-                });
-
-                // 섹션 이동 버튼
-                nextToSlideshowBtn.addEventListener('click', () => {
-                    showSection('slideshow-section');
-                    // Step 2 버튼 활성화/비활성화
-                    const totalImages = Object.values(uploadedFilesByCategory).flat().filter(f => f.type.startsWith('image/')).length;
-                    
-                    const totalDataFiles = Object.values(uploadedFilesByCategory).flat().filter(f => 
-                        f.type.includes('csv') || f.type.includes('excel') || f.name.endsWith('.xlsx') || f.name.endsWith('.xls')
-                    ).length;
-
-                    generateButton.disabled = totalImages === 0 && totalDataFiles === 0;
-                    if (generateButton.disabled) {
-                        alert("최소한 하나의 파일(CSV/XLSX 또는 이미지)을 업로드해야 제안서 생성을 요청할 수 있습니다.");
-                    }
-                });
-
-                // 제안서 생성 버튼 (Step 2 -> Step 3)
-                generateButton.addEventListener('click', async () => {
-                    generateButton.disabled = true;
-                    showSection('result-section');
-                    
-                    // 🚨 이 부분에서 이전 내용을 확실히 지워줍니다. 
-                    resultContent.innerHTML = ''; 
-                    
-                    initialResultMessage.classList.add('hidden');
-                    loading.classList.remove('hidden');
-                    resultContent.appendChild(loading); // 로딩 엘리먼트를 다시 추가
-
-                    // 1. 브라우저를 통한 텍스트 리포트 생성 (멀티 모델 시뮬레이션)
-                    const analysisReport = await callAnalysisModel();
-                    
-                    // 2. GPT-4o에 전달할 이미지 Base64 데이터 수집
-                    const imageBase64Payloads = Object.values(uploadedFilesByCategory)
-                        .flat()
-                        .filter(f => f.type.startsWith('image/'))
-                        .map(f => f.dataUrl); 
-
-                    
-                    // 3. GPT-4o 호출
-                    const gptResponse = await callGPT4o(analysisReport, imageBase64Payloads);
-                    
-                    // 4. 결과 출력: marked.parse()를 사용하여 Markdown을 HTML로 변환합니다.
-                    loading.classList.add('hidden');
-                    
-                    // 🌟 결과 변환 및 삽입 (Markdown 파싱 핵심!)
-                    if (typeof marked !== 'undefined') {
-                        resultContent.innerHTML = marked.parse(gptResponse); 
-                    } else {
-                        resultContent.innerHTML = `<p style="color:red;">오류: Marked.js 라이브러리를 찾을 수 없습니다. (CDN 로드 실패 가능성)</p><pre>${gptResponse}</pre>`;
-                    }
-                    // ---------------------------------------------
-
-                    generateButton.disabled = false;
-                });
-                
-                // 다시 시작 버튼
-                restartBtn.addEventListener('click', () => {
-                     // 파일 목록 및 섹션 초기화
-                     uploadedFilesByCategory = {
-                        domestic_trend: [],
-                        international_trend: [],
-                        domestic_review: [],
-                        international_review: []
-                     };
-                     
-                     // 미리보기 영역 초기화
-                     document.querySelectorAll('.preview-area').forEach(el => el.innerHTML = '');
-                     
-                     // 결과 섹션 초기화
-                     resultContent.innerHTML = '';
-                     resultContent.appendChild(initialResultMessage);
-                     initialResultMessage.classList.remove('hidden');
-
-                     showSection('upload-section');
-                     updateNextButtonState(); 
-                });
-
-                // 초기 API 키 상태 확인
-                updateNextButtonState();
-            }
-
-            // 초기화 실행
-            setupEventListeners();
+    </div> <!-- container 끝 -->
+
+
+    <!-- ============================= -->
+    <!--     JavaScript section        -->
+    <!-- ============================= -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* ====== 설정값 ====== */
+    const OPENAI_API_KEY =
+        document.querySelector('meta[name="openai-api-key"]').getAttribute('content');
+    const SERVER_URL = "http://15.165.159.161:8000/analyze";
+
+    /* ====== DOM 요소 ====== */
+    const uploadSection = document.getElementById('upload-section');
+    const slideshowSection = document.getElementById('slideshow-section');
+    const resultSection = document.getElementById('result-section');
+
+    const nextToSlideshowBtn = document.getElementById('nextToSlideshowBtn');
+    const goToGPTButton = document.getElementById('goToGPTButton');
+    const restartBtn = document.getElementById('restartBtn');
+
+    const mainSlideshowContainer = document.getElementById('mainSlideshowContainer');
+    const noImagesMessage = document.getElementById('noImagesMessage');
+
+    const resultContent = document.getElementById('resultContent');
+    const loading = document.getElementById('loading');
+    const initialResultMessage = document.getElementById('initialResultMessage');
+
+    let currentSlideIndex = 1;
+
+    /* ===== 업로드된 파일 저장 ===== */
+    let uploadedFilesByCategory = {
+        domestic_trend: [],
+        international_trend: [],
+        domestic_review: [],
+        international_review: []
+    };
+
+    const categoryMap = {
+        domestic_trend: "국내 트렌드",
+        international_trend: "해외 트렌드",
+        domestic_review: "국내 리뷰",
+        international_review: "해외 리뷰"
+    };
+
+    /* ============================= */
+    /*   공통 섹션 전환 함수         */
+    /* ============================= */
+    function showSection(sectionId) {
+        [uploadSection, slideshowSection, resultSection].forEach(sec => {
+            sec.classList.add('hidden');
         });
-        /* --- JavaScript 로직 끝 --- */
-    </script>
+
+        document.getElementById(sectionId).classList.remove('hidden');
+
+        if (sectionId === 'slideshow-section') {
+            renderSlideshow();
+        }
+    }
+
+    /* ============================= */
+    /*   슬라이드쇼 제어 함수       */
+    /* ============================= */
+    window.plusSlides = function(n, containerId) {
+        showSlides(currentSlideIndex += n, containerId);
+    };
+
+    function showSlides(n, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        let slides = container.getElementsByClassName("mySlides");
+        if (slides.length === 0) return;
+
+        if (n > slides.length) currentSlideIndex = 1;
+        if (n < 1) currentSlideIndex = slides.length;
+
+        for (let i = 0; i < slides.length; i++)
+            slides[i].style.display = "none";
+
+        slides[currentSlideIndex - 1].style.display = "block";
+    }
+
+    /* ====================================================== */
+    /*   Step1 → Step2: 서버로 파일 전송하여 분석 결과 받기   */
+    /* ====================================================== */
+    nextToSlideshowBtn.addEventListener('click', async () => {
+        const formData = new FormData();
+
+        let hasAnyFile = false;
+
+        // 파일들을 formData 로 변환
+        for (const category in uploadedFilesByCategory) {
+            uploadedFilesByCategory[category].forEach((file) => {
+                formData.append(category, file);
+                hasAnyFile = true;
+            });
+        }
+
+        if (!hasAnyFile) {
+            alert("최소 1개 이상의 파일을 업로드해야 합니다.");
+            return;
+        }
+
+        // Step2로 이동
+        showSection('slideshow-section');
+
+        // 서버 요청 시작
+        noImagesMessage.innerText = "서버에서 분석 중입니다...";
+        noImagesMessage.classList.remove("hidden");
+
+        try {
+            const res = await fetch(SERVER_URL, {
+                method: "POST",
+                body: formData
+            });
+
+            if (!res.ok) {
+                alert("서버 분석 중 오류 발생: " + res.statusText);
+                return;
+            }
+
+            const json = await res.json();
+
+            // 서버에서 받은 결과 저장
+            window._analysisImages = json.images || [];
+            window._analysisSummary = json.summary || "";
+
+            noImagesMessage.classList.add("hidden");
+            renderSlideshow();
+
+        } catch (e) {
+            alert("서버 연결 실패: " + e.message);
+        }
+    });
+
+    /* ============================= */
+    /*  Step2 시각화 슬라이드쇼 렌더 */
+    /* ============================= */
+    function renderSlideshow() {
+        mainSlideshowContainer.innerHTML = "";
+
+        const images = window._analysisImages || [];
+
+        if (images.length === 0) {
+            noImagesMessage.classList.remove("hidden");
+            return;
+        }
+
+        noImagesMessage.classList.add("hidden");
+
+        images.forEach((imgObj, index) => {
+            const slide = document.createElement("div");
+            slide.className = "mySlides";
+
+            slide.innerHTML = `
+                <img src="${imgObj.data}" alt="분석 이미지 ${index}">
+                <div class="caption">${imgObj.title}</div>
+            `;
+
+            mainSlideshowContainer.appendChild(slide);
+        });
+
+        currentSlideIndex = 1;
+        showSlides(currentSlideIndex, "mainSlideshowContainer");
+    }
+
+
+    /* ====================================================== */
+    /*   Step3: GPT 보고서 생성 요청                           */
+    /* ====================================================== */
+    goToGPTButton.addEventListener("click", async () => {
+
+        showSection('result-section');
+        resultContent.innerHTML = "";
+        resultContent.appendChild(loading);
+        loading.classList.remove("hidden");
+
+        const summary = window._analysisSummary || "";
+
+        const systemPrompt = `
+당신은 신제품 기획 전문가입니다.
+다음 분석 요약을 기반으로 신제품 제안서를 작성하십시오.
+
+[분석 요약]
+${summary}
+        `;
+
+        const userPrompt = "위 분석 결과를 기반으로 제안서를 Markdown 형식으로 생성해 주세요.";
+
+        try {
+            const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${OPENAI_API_KEY}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-4o",
+                    messages: [
+                        { role: "system", content: systemPrompt },
+                        { role: "user", content: userPrompt }
+                    ]
+                })
+            });
+
+            const data = await response.json();
+
+            loading.classList.add("hidden");
+
+            resultContent.innerHTML =
+                marked.parse(data.choices[0].message.content);
+
+        } catch (e) {
+            loading.classList.add("hidden");
+            resultContent.innerHTML = `<p style="color:red;">GPT 호출 오류: ${e.message}</p>`;
+        }
+    });
+
+
+    /* ============================= */
+    /*   다시 시작 버튼              */
+    /* ============================= */
+    restartBtn.addEventListener("click", () => {
+        uploadedFilesByCategory = {
+            domestic_trend: [],
+            international_trend: [],
+            domestic_review: [],
+            international_review: []
+        };
+
+        document.querySelectorAll('.preview-area').forEach(el => el.innerHTML = "");
+
+        resultContent.innerHTML = "";
+        initialResultMessage.classList.remove("hidden");
+
+        showSection("upload-section");
+    });
+    /* ====================================================== */
+    /*   파일 업로드 Drag & Drop + 미리보기 처리              */
+    /* ====================================================== */
+    function setupFileEvents() {
+        document.querySelectorAll('.input-group').forEach(group => {
+            const category = group.getAttribute('data-category');
+            const dropArea = group.querySelector('.file-drop-area');
+            const fileInput = document.getElementById(`${category}_input`);
+            const previewArea = document.getElementById(`${category}_preview`);
+
+            /* 클릭 → 파일 선택 */
+            dropArea.addEventListener("click", () => fileInput.click());
+
+            /* 직접 파일 선택 */
+            fileInput.addEventListener("change", (e) => {
+                handleFiles(e.target.files, category, previewArea);
+            });
+
+            /* 드래그 방지 이벤트 */
+            ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+                dropArea.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+            });
+
+            /* 드래그 시 하이라이트 */
+            ["dragenter", "dragover"].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => {
+                    dropArea.classList.add("drag-over");
+                });
+            });
+
+            ["dragleave", "drop"].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => {
+                    dropArea.classList.remove("drag-over");
+                });
+            });
+
+            /* 드랍된 파일 처리 */
+            dropArea.addEventListener("drop", (e) => {
+                const files = e.dataTransfer.files;
+                handleFiles(files, category, previewArea);
+            });
+        });
+    }
+
+    /* ====================================================== */
+    /*   파일 저장 + 미리보기 처리                             */
+    /* ====================================================== */
+    function handleFiles(files, category, previewArea) {
+        const arr = Array.from(files);
+
+        arr.forEach(file => {
+            uploadedFilesByCategory[category].push(file);
+        });
+
+        renderPreview(category, previewArea);
+    }
+
+    /* 파일별 아이콘 */
+    function getFileIcon(file) {
+        if (file.type.startsWith("image/")) return "🖼️";
+        if (
+            file.name.endsWith(".csv") ||
+            file.name.endsWith(".xlsx") ||
+            file.name.endsWith(".xls")
+        ) return "📊";
+        return "📄";
+    }
+
+    /* 미리보기 렌더링 */
+    function renderPreview(category, previewArea) {
+        const files = uploadedFilesByCategory[category];
+
+        previewArea.innerHTML = "";
+
+        files.forEach(file => {
+            const item = document.createElement("div");
+            item.classList.add("file-item");
+
+            item.innerHTML = `
+                <span class="file-icon">${getFileIcon(file)}</span>
+                <span>${file.name}</span>
+            `;
+
+            previewArea.appendChild(item);
+        });
+    }
+
+    /* ====================================================== */
+    /*   초기 실행                                           */
+    /* ====================================================== */
+    setupFileEvents(); // 파일 업로드 기능 활성화
+
+}); // DOMContentLoaded 끝
+</script>
+
 </body>
 </html>
